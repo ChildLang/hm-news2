@@ -19,7 +19,7 @@ router.beforeEach(function(to, from, next) {
   const token = localStorage.getItem('token')
   if (pages.includes(to.path)) {
     if (!token) {
-      router.push('/login')
+      next({ name: 'login' })
       return
     }
   }
