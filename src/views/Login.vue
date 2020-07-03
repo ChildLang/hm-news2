@@ -65,7 +65,8 @@ export default {
       if (statusCode === 200) {
         this.$toast.success(message)
         localStorage.setItem('token', data.token)
-        this.$router.push('/')
+        localStorage.setItem('id', data.user.id)
+        this.$router.push('/user')
       } else {
         this.$toast.fail(message)
       }
