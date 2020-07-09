@@ -59,7 +59,11 @@ export default {
         localStorage.setItem('token', data.token)
         localStorage.setItem('id', data.user.id)
         this.$toast.success('登录成功')
-        this.$router.push('/user')
+        if (this.$route.query.back) {
+          this.$router.back()
+        } else {
+          this.$router.push('/user')
+        }
       } else {
         this.$toast.fail(message)
       }

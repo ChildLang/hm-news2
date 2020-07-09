@@ -30,7 +30,8 @@ import {
   Uploader,
   List,
   Tab,
-  Tabs
+  Tabs,
+  PullRefresh
 } from 'vant'
 // 导入axios
 import axios from 'axios'
@@ -47,7 +48,7 @@ axios.interceptors.request.use(function(config) {
 axios.interceptors.response.use(res => {
   const { statusCode, message } = res.data
   if (statusCode === 401 && message === '用户信息验证失败') {
-    Toast.fail(message)
+    Toast.fail(message + '请先登录！')
     localStorage.removeItem('token')
     localStorage.removeItem('id')
     router.push('/login')
@@ -74,18 +75,21 @@ Vue.use(Uploader)
 Vue.use(List)
 Vue.use(Tab)
 Vue.use(Tabs)
+Vue.use(PullRefresh)
 
 // 处理图片地址
 Vue.prototype.$url = function(url) {
-  if (url.startsWith('http')) {
-    return url
-  } else {
-    return axios.defaults.baseURL + url
+  if (url) {
+    if (url.startsWith('http')) {
+      return url
+    } else {
+      return axios.defaults.baseURL + url
+    }
   }
 }
 // 全局过滤器-时间处理
-Vue.filter('time', function(input) {
-  return moment(input).format('YYYY-MM-DD')
+Vue.filter('time', function(input, str = 'YYYY-MM-DD') {
+  return moment(input).format(str)
 })
 new Vue({
   render: c => c(App),

@@ -1,5 +1,5 @@
 <template>
-  <div class="newspost">
+  <div class="newspost" @click="$router.push(`/details/${post.id}`)">
     <div class="video" v-if="post.content.startsWith('http')">
       <div class="title">
         <p>{{post.title}}</p>
@@ -73,6 +73,9 @@ export default {
     flex-wrap: wrap;
     align-content: space-between;
     padding-right: 10px;
+  }
+  p {
+    width: 100%;
   }
   .pic {
     img {

@@ -4,7 +4,7 @@
       <van-nav-bar title="我的收藏" left-text="返回" left-arrow @click-left="$router.back()"/>
     </div>
     <ul>
-      <news-post v-for="post in info" :key="post.id" :post="post">{{post.title}}</news-post>
+      <news-post v-for="post in info" :key="post.id" :post="post"></news-post>
     </ul>
   </div>
 </template>
@@ -25,6 +25,9 @@ export default {
       const { data, statusCode } = res.data
       if (statusCode === 200) {
         this.info = data
+        this.info.forEach(item => {
+          item.comment_length = item.comments.length
+        })
       }
     }
   }

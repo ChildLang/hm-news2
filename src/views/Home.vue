@@ -14,9 +14,24 @@
         <span class="iconfont iconwode"></span>
       </div>
     </div>
+    <!-- 标签栏 -->
     <van-tabs v-model="active" sticky animated swipeable>
       <van-tab :title="item.name" v-for="item in tabList" :key="item.id">
-        <news-post v-for="post in postList" :key="post.id" :post="post">{{post.title}}</news-post>
+        <!-- 文章列表 -->
+        <!-- 下拉刷新 -->
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <!-- 上拉加载 -->
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            :offset="10"
+            :immediate-check="false"
+            @load="onLoad"
+          >
+            <news-post v-for="post in postList" :key="post.id" :post="post"></news-post>
+          </van-list>
+        </van-pull-refresh>
       </van-tab>
     </van-tabs>
   </div>
@@ -29,7 +44,10 @@ export default {
       tabList: [],
       postList: [],
       pageIndex: 1,
-      pageSize: 5
+      pageSize: 5,
+      loading: false,
+      finished: false,
+      refreshing: false
     }
   },
   created() {
@@ -56,12 +74,40 @@ export default {
       console.log(res)
       const { data, statusCode } = res.data
       if (statusCode === 200) {
-        this.postList = data
+        this.postList = [...this.postList, ...data]
+        this.loading = false
+        this.refreshing = false
+        if (data.length < this.pageSize) {
+          this.finished = true
+        }
+        console.log(this.postList)
       }
+    },
+    onLoad() {
+      console.log('加载中...')
+      setTimeout(() => {
+        ++this.pageIndex
+        this.getPostList(this.active)
+      }, 1000)
+    },
+    onRefresh() {
+      console.log('下拉刷新')
+      setTimeout(() => {
+        this.$toast('刷新成功')
+        this.postList = []
+        this.finished = false
+        this.pageIndex = 1
+        this.loading = true
+        this.getPostList(this.active)
+      }, 1000)
     }
   },
   watch: {
     active(value) {
+      this.pageIndex = 1
+      this.finished = false
+      this.postList = []
+      this.loading = true
       this.getPostList(value)
     }
   }

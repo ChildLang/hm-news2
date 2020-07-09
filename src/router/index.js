@@ -8,6 +8,7 @@ import Follow from '../views/Follow.vue'
 import Common from '../views/Common.vue'
 import Star from '../views/Star.vue'
 import Home from '../views/Home.vue'
+import Details from '../views/Details.vue'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -19,7 +20,8 @@ const router = new VueRouter({
     { path: '/useredit', component: UserEdit, name: 'useredit' },
     { path: '/follow', component: Follow, name: 'follow' },
     { path: '/common', component: Common, name: 'common' },
-    { path: '/star', component: Star, name: 'star' }
+    { path: '/star', component: Star, name: 'star' },
+    { path: '/details/:id', component: Details, name: 'details' }
   ]
 })
 const pages = ['/user', '/useredit']

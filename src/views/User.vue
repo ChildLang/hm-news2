@@ -2,8 +2,8 @@
   <div class="user">
     <div class="header" @click="$router.push('/useredit')">
       <div class="pic">
-        <img :src="$axios.defaults.baseURL+info.head_img" alt>
-        <!-- <img :src="$url(info.head_img)" alt> -->
+        <!-- <img :src="$axios.defaults.baseURL+info.head_img" alt> -->
+        <img :src="$url(info.head_img)" alt>
       </div>
       <div class="name">
         <p>
