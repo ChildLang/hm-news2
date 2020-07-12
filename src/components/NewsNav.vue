@@ -22,6 +22,11 @@
   padding-right: 20px;
   font-size: 17px;
   border-bottom: 1px solid #999;
+  .name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
   .content {
     font-size: 15px;
     color: #999;

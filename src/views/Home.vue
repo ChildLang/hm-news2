@@ -5,16 +5,19 @@
         <span class="iconfont iconnew"></span>
       </div>
       <div class="search">
-        <div class="search-box">
+        <div class="search-box" @click="$router.push('/search')">
           <span class="iconfont iconsearch"></span>
           <span>搜索新闻</span>
         </div>
       </div>
-      <div class="user" @click="$router.push('/user')">
+      <div class="user" @click="user">
         <span class="iconfont iconwode"></span>
       </div>
     </div>
     <!-- 标签栏 -->
+    <div class="column" @click="$router.push('/column')">
+      <span class="iconfont iconjiantou"></span>
+    </div>
     <van-tabs v-model="active" sticky animated swipeable>
       <van-tab :title="item.name" v-for="item in tabList" :key="item.id">
         <!-- 文章列表 -->
@@ -38,6 +41,7 @@
 </template>
 <script>
 export default {
+  name: 'home',
   data() {
     return {
       active: 0,
@@ -55,6 +59,11 @@ export default {
   },
   methods: {
     async getTabList() {
+      const addList = localStorage.getItem('addList')
+      if (addList) {
+        this.tabList = JSON.parse(addList)
+        return
+      }
       const res = await this.$axios.get('/category')
       console.log(res)
       const { statusCode, data } = res.data
@@ -100,6 +109,15 @@ export default {
         this.loading = true
         this.getPostList(this.active)
       }, 1000)
+    },
+    user() {
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.$router.push('/user')
+      } else {
+        localStorage.setItem('path', this.$route.path)
+        this.$router.push('/login')
+      }
     }
   },
   watch: {
@@ -145,6 +163,12 @@ export default {
         font-size: 25px;
       }
     }
+  }
+  .column {
+    text-align: center;
+    width: 44px;
+    background-color: #ccc;
+    transform: rotate(-90deg);
   }
 }
 </style>

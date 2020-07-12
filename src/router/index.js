@@ -9,6 +9,8 @@ import Common from '../views/Common.vue'
 import Star from '../views/Star.vue'
 import Home from '../views/Home.vue'
 import Details from '../views/Details.vue'
+import Column from '../views/Column.vue'
+import Search from '../views/Search.vue'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -21,7 +23,9 @@ const router = new VueRouter({
     { path: '/follow', component: Follow, name: 'follow' },
     { path: '/common', component: Common, name: 'common' },
     { path: '/star', component: Star, name: 'star' },
-    { path: '/details/:id', component: Details, name: 'details' }
+    { path: '/details/:id', component: Details, name: 'details' },
+    { path: '/column', component: Column, name: 'column' },
+    { path: '/search', component: Search, name: 'search' }
   ]
 })
 const pages = ['/user', '/useredit']

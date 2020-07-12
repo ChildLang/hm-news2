@@ -12,6 +12,7 @@ import moment from 'moment'
 import NewsLogo from './components/NewsLogo.vue'
 import NewsNav from './components/NewsNav.vue'
 import NewsPost from './components/NewsPost.vue'
+import NewsComment from './components/NewsComment.vue'
 
 // 导入路由配置文件
 import router from './router'
@@ -60,6 +61,7 @@ axios.interceptors.response.use(res => {
 Vue.component('news-logo', NewsLogo)
 Vue.component('news-nav', NewsNav)
 Vue.component('news-post', NewsPost)
+Vue.component('news-comment', NewsComment)
 // 初始化vant组件
 Vue.use(Button)
 Vue.use(NavBar)
@@ -91,6 +93,13 @@ Vue.prototype.$url = function(url) {
 Vue.filter('time', function(input, str = 'YYYY-MM-DD') {
   return moment(input).format(str)
 })
+moment.locale('zh-CN')
+Vue.filter('fromNow', function(input) {
+  return moment(input).fromNow()
+})
+// 创建bus总线
+const bus = new Vue()
+Vue.prototype.$bus = bus
 new Vue({
   render: c => c(App),
   router
