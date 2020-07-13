@@ -1,16 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
-import User from '../views/User.vue'
-import UserEdit from '../views/UserEdit.vue'
-import Follow from '../views/Follow.vue'
-import Common from '../views/Common.vue'
-import Star from '../views/Star.vue'
-import Home from '../views/Home.vue'
-import Details from '../views/Details.vue'
-import Column from '../views/Column.vue'
-import Search from '../views/Search.vue'
+const Login = () => import(/* webpackChunkName: "user" */ '../views/Login.vue')
+const Register = () =>
+  import(/* webpackChunkName: "user" */ '../views/Register.vue')
+const User = () => import(/* webpackChunkName: "user" */ '../views/User.vue')
+const UserEdit = () =>
+  import(/* webpackChunkName: "user" */ '../views/UserEdit.vue')
+const Follow = () =>
+  import(/* webpackChunkName: "user" */ '../views/Follow.vue')
+const Common = () =>
+  import(/* webpackChunkName: "user" */ '../views/Common.vue')
+const Star = () => import(/* webpackChunkName: "user" */ '../views/Star.vue')
+const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+const Details = () =>
+  import(/* webpackChunkName: "post" */ '../views/Details.vue')
+const Column = () =>
+  import(/* webpackChunkName: "post" */ '../views/Column.vue')
+const Search = () =>
+  import(/* webpackChunkName: "post" */ '../views/Search.vue')
 
 Vue.use(VueRouter)
 const router = new VueRouter({

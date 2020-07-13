@@ -1,21 +1,29 @@
 <template>
   <div class="search">
     <div class="header">
-      <div class="back" @click="$router.back()">
+      <div class="back" @click="back">
         <span class="iconfont iconjiantou"></span>
       </div>
       <div class="input">
-        <input ref="input" type="text" placeholder="通灵兽消失术" v-model="keyword" @input="query">
+        <input
+          ref="input"
+          type="text"
+          placeholder="通灵兽消失术"
+          v-model="keyword"
+          @input="query"
+          @keyup.enter="getlist"
+        >
         <span class="iconfont iconsearch"></span>
       </div>
-      <div class="btn">搜索</div>
+      <div class="btn" @click="getlist">搜索</div>
     </div>
     <div class="query" v-show="isShow">
-      <news-nav v-for="item in data" :key="item.id" @click="jump(item.id)">{{item.title}}</news-nav>
+      <news-post v-for="post in list" :key="post.id" :post="post"></news-post>
+      <news-nav v-for="item in data" :key="item.id" @click="txtKey(item.title)">{{item.title}}</news-nav>
     </div>
     <div class="history">
       <h3>历史记录</h3>
-      <span v-for="(item,index) in history" :key="item">
+      <span v-for="(item,index) in history" :key="item" @click="hisSearch(item)">
         {{item}}
         <i class="iconfont iconicon-test" @click="del(index)"></i>
       </span>
@@ -37,7 +45,9 @@ export default {
       timer: '',
       keyword: '',
       data: [],
-      history: []
+      history: [],
+      list: [],
+      recommendList: []
     }
   },
   created() {
@@ -48,7 +58,6 @@ export default {
   },
   methods: {
     query() {
-      this.isShow = true
       clearTimeout(this.timer)
       this.timer = setTimeout(
         async function() {
@@ -59,21 +68,51 @@ export default {
           const { data, statusCode } = res.data
           if (statusCode === 200) {
             this.data = data
+            this.isShow = true
           }
         }.bind(this),
         500
       )
     },
-    jump(id) {
-      this.history.push(this.keyword)
-      localStorage.setItem('history', JSON.stringify(this.history))
-      this.$router.push(`details/${id}`)
+    back() {
+      if (this.keyword) {
+        this.keyword = ''
+      } else {
+        this.$router.back()
+      }
+    },
+    txtKey(key) {
+      this.keyword = key
+    },
+    async getlist() {
+      const res = await this.$axios.get(`/post_search?keyword=${this.keyword}`)
+      console.log(res)
+      const { data, statusCode } = res.data
+      if (statusCode === 200) {
+        this.isShow = true
+        this.list = data
+        this.data = []
+        this.history = this.history.filter(item => item !== this.keyword)
+        this.history.unshift(this.keyword)
+      }
+    },
+    hisSearch(item) {
+      this.keyword = item
+      this.getlist()
     },
     del(index) {
-      this.history.splice(index, 1)
+      console.log(123)
     }
   },
   watch: {
+    keyword(value) {
+      if (!value) {
+        clearTimeout(this.timer)
+        this.isShow = false
+      } else {
+        this.list = []
+      }
+    },
     history: {
       deep: true,
       handler(value) {
@@ -89,11 +128,12 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  padding: 0 20px;
+  // padding: 0 20px;
   background-color: #f3f3f3;
   .header {
     height: 50px;
     display: flex;
+    padding: 0 20px;
     justify-content: space-between;
     align-items: center;
     .back {
@@ -133,14 +173,8 @@ export default {
     width: 100%;
     height: 100%;
     background-color: #f3f3f3;
-    .nav {
-      margin: 0;
-      padding: 0;
-      margin-right: 40px;
-    }
   }
   .history {
-    padding: 20px 0;
     border-bottom: 1px solid #999;
     span {
       display: inline-block;
@@ -153,7 +187,6 @@ export default {
     }
   }
   .hot {
-    padding-top: 20px;
     span {
       display: inline-block;
       width: 50%;
@@ -162,6 +195,7 @@ export default {
   }
   .history,
   .hot {
+    padding: 20px;
     h3 {
       font-size: 16px;
       margin-bottom: 20px;

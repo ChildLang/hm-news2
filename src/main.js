@@ -32,12 +32,13 @@ import {
   List,
   Tab,
   Tabs,
-  PullRefresh
+  PullRefresh,
+  Sticky
 } from 'vant'
 // 导入axios
 import axios from 'axios'
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = '/api'
 // axios请求和响应拦截器
 axios.interceptors.request.use(function(config) {
   const token = localStorage.getItem('token')
@@ -78,6 +79,7 @@ Vue.use(List)
 Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(PullRefresh)
+Vue.use(Sticky)
 
 // 处理图片地址
 Vue.prototype.$url = function(url) {

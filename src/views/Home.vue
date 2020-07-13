@@ -15,9 +15,11 @@
       </div>
     </div>
     <!-- 标签栏 -->
-    <div class="column" @click="$router.push('/column')">
-      <span class="iconfont iconjiantou"></span>
-    </div>
+    <van-sticky :offset-top="-50">
+      <div class="column" @click="$router.push('/column')">
+        <span class="iconfont iconjiantou"></span>
+      </div>
+    </van-sticky>
     <van-tabs v-model="active" sticky animated swipeable>
       <van-tab :title="item.name" v-for="item in tabList" :key="item.id">
         <!-- 文章列表 -->
@@ -62,6 +64,7 @@ export default {
       const addList = localStorage.getItem('addList')
       if (addList) {
         this.tabList = JSON.parse(addList)
+        this.getPostList(this.active)
         return
       }
       const res = await this.$axios.get('/category')
@@ -165,10 +168,26 @@ export default {
     }
   }
   .column {
+    height: 43px;
+    line-height: 43px;
     text-align: center;
-    width: 44px;
+    width: 10%;
     background-color: #ccc;
-    transform: rotate(-90deg);
+    position: absolute;
+    right: 0;
+    top: 50px;
+    z-index: 999;
+    // text-align: center;
+    // height: 36px;
+    // width: 43px;
+    // background-color: #ccc;
+    // transform: rotate(-90deg);
+    // position: absolute;
+    // right: -3px;
+    // top: 53px;
   }
+}
+/deep/.van-tabs .van-sticky {
+  width: 90%;
 }
 </style>

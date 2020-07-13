@@ -82,19 +82,25 @@ export default {
     }
   },
   created() {
+    console.log('我执行了')
     console.log(this.$route.params)
     this.getPost()
     this.getComment()
-    this.$bus.$on('reply', (name, id) => {
+    this.$bus.$on('reply', this.onReply)
+  },
+  destroyed() {
+    console.log('我销毁了')
+    this.$bus.$off('reply', this.onReply)
+  },
+  methods: {
+    onReply(name, id) {
       this.isShow = true
       this.name = '@' + name
       this.id = id
       this.$nextTick().then(() => {
         this.$refs.textarea.focus()
       })
-    })
-  },
-  methods: {
+    },
     async getPost() {
       const res = await this.$axios.get(`/post/${this.$route.params.id}`)
       console.log(res)
