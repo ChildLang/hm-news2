@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import store from './store'
 
 // 导入样式文件
 import './styles/iconfont.less'
@@ -104,5 +105,6 @@ const bus = new Vue()
 Vue.prototype.$bus = bus
 new Vue({
   render: c => c(App),
-  router
+  router,
+  store
 }).$mount('#app')

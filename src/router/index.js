@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 const Login = () => import(/* webpackChunkName: "user" */ '../views/Login.vue')
 const Register = () =>
   import(/* webpackChunkName: "user" */ '../views/Register.vue')
@@ -38,6 +39,10 @@ const router = new VueRouter({
 const pages = ['/user', '/useredit']
 router.beforeEach(function(to, from, next) {
   console.log(to)
+  // 判断是否要跳转主页，true则缓存主页
+  if (to.name === 'home') {
+    store.commit('add', { name: 'home' })
+  }
   const token = localStorage.getItem('token')
   if (pages.includes(to.path)) {
     if (!token) {

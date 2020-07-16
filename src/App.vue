@@ -1,9 +1,15 @@
 <template>
-  <keep-alive include="home">
+  <keep-alive :include="keepList">
     <router-view></router-view>
   </keep-alive>
 </template>
 <script>
+import { mapState } from 'vuex'
+export default {
+  computed: {
+    ...mapState(['keepList'])
+  }
+}
 </script>
 <style>
 </style>

@@ -131,6 +131,12 @@ export default {
       this.loading = true
       this.getPostList(value)
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.name !== 'details') {
+      this.$store.commit('remove', { name: 'home' })
+    }
+    next()
   }
 }
 </script>
